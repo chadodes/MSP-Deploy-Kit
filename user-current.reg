@@ -14,7 +14,9 @@ Windows Registry Editor Version 5.00
 "HideFileExt"=dword:00000000
 "LaunchTo"=dword:00000001
 "ShowTaskViewButton"=dword:00000000
-"TaskbarDa"=dword:00000000
+; "TaskbarDa" (Widgets button) omitted on purpose: on current Windows 11 builds
+; writing it is denied even as administrator (bisected 2026-11-20), and the one
+; failing value made the whole import report an error. Widgets stays default.
 "TaskbarMn"=dword:00000000
 "ShowCopilotButton"=dword:00000000
 "SearchboxTaskbarMode"=dword:00000001
