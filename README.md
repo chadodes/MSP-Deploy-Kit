@@ -1,4 +1,4 @@
-# MSP Deploy Kit — Windows 11 OOBE USB (v2, per-client)
+# MSP Deploy Kit — Windows 11 OOBE USB (v3.5.0, per-client)
 
 Turns a brand-new or freshly reset Windows 11 laptop sitting at the setup
 screen into a configured, Entra-joined machine for a specific client, with
@@ -8,6 +8,10 @@ almost no clicking:
 away.** The machine reboots, OOBE answers itself, your MSP admin account is
 created, and at first sign-in a finishing script installs that client's RMM
 agent and joins the machine to that client's Entra ID tenant.
+
+![A full deployment, start to finish](mspdeploy-highlights.gif)
+
+*A real run, start to finish. Longer cut: [mspdeploy-walkthrough.gif](mspdeploy-walkthrough.gif) - all 18 steps.*
 
 ---
 
@@ -108,7 +112,7 @@ never `!` (batch delayed expansion silently drops it).
    resumes by itself — then per-user settings, generic apps, **the
    client's agent**, the stick's updates, a Windows Update pass, the
    timezone, the update finisher, and cleanup.
-   Log file: `C:\MSPDeploy\deploy.log`.
+   Log file: `C:\MSPDeploy\deploy-<computername>.log` (called `deploy.log` while the run is in progress; renamed when it completes).
 
 ## Settings Only mode (choice 2)
 
@@ -145,7 +149,7 @@ update restart off. (Remote Desktop is in the file commented out.)
 
 **Every user account (user.reg → Default profile, so future accounts inherit
 it; user-current.reg covers the first account):** file extensions shown ·
-Explorer opens at This PC · Widgets / Chat / Copilot / Task View buttons off ·
+Explorer opens at This PC · Chat / Copilot / Task View buttons off ·
 search box as icon · advertising ID off · no suggested or silently-installed
 Store apps · no "finish setting up your device" nags · no Bing in Start
 search · NumLock on · Game Bar capture off · no OneDrive ads in Explorer.
@@ -218,6 +222,13 @@ Identity → Overview) before it does anything. `setup.cmd` imports it the same 
 - The eventual Microsoft-blessed version of this is **Windows Autopilot**
   (per-tenant, no expiring tokens) — worth adopting per client when a
   tenant is ready; this kit remains the no-setup fallback.
+
+## What's new in v3.5.0
+
+- **Renamed** from Opus Deploy Kit to MSP Deploy Kit - new Doom-style banner, `MSPAdmin` local admin, `mspdeploy.marker` stick marker.
+- The finished deployment log is **renamed to `deploy-<computername>.log`** so logs from different machines don't collide; the update finisher reads the same name.
+- Removed the Widgets-button value (`TaskbarDa`) from the per-user settings: current Windows builds deny that write, which made the settings import report an error. The Widgets button now stays at the Windows default; every other setting is unchanged.
+- Walkthrough GIFs added to the repo (top of this README).
 
 ## Files
 
