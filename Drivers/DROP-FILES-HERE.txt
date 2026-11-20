@@ -1,0 +1,32 @@
+OPUS DEPLOY - DRIVERS FOLDER
+============================
+post-oobe.cmd installs drivers from here with pnputil BEFORE the
+Entra join, so a machine whose fresh Windows install has no network
+drivers gets its network back before the join, the agent, and the
+updates need it.
+
+WHAT TO PUT HERE
+- Extracted driver packages. The file pnputil keys off is the .inf;
+  the rest of the package (.sys, .cat, .dll, firmware files) must
+  stay with it - the .inf references them. Copy each package across
+  complete and untouched; do not pick files out by extension.
+- Vendor downloads that arrive as an .exe or .zip installer must be
+  EXTRACTED first (run the .exe on your PC and choose Extract, or
+  unzip it). pnputil cannot use an installer .exe or a .zip.
+
+LAYOUT - ONE SUBFOLDER PER DRIVER PACKAGE:
+    Drivers\
+        Latitude-5440-WiFi\
+            netwtw08.inf, .sys, .cat, ...
+        Realtek-LAN\
+            rt68cx21x64.inf, .sys, .cat, ...
+pnputil searches subfolders automatically, so nesting is fine.
+Do NOT dump every file flat into this root: different packages often
+ship files with the same names and would overwrite each other.
+
+Priority: network drivers (Wi-Fi + LAN) for the models you deploy.
+Other drivers work too, but keep it lean - Windows Update and the
+finisher pick up most of the rest once the machine is online.
+
+This folder is read from the stick at run time; it is NOT copied to
+C:\OpusDeploy. Keep the stick plugged in until post-oobe finishes.

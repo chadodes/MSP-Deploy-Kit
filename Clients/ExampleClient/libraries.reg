@@ -1,0 +1,22 @@
+Windows Registry Editor Version 5.00
+
+; ============================================================================
+; EXAMPLE CLIENT - SHAREPOINT LIBRARIES TO AUTO-SYNC
+; (OneDrive "Configure team site libraries to sync automatically" policy)
+; setup.cmd imports this file during deployment when it exists, so the
+; listed libraries show up in Explorer for users signing in on the machine.
+;
+; HOW TO FILL IN - one line per library:
+;   1. In the client's SharePoint, open the document library in a browser.
+;   2. Click "Sync" in the library toolbar.
+;   3. In the dialog, click "Copy library ID".
+;   4. Uncomment the example line below and replace BOTH parts:
+;      the library's display name on the left, the copied ID on the right.
+;
+; NOTES: The user needs permission to the library. OneDrive picks these up
+; on its policy cycle - a library can take up to ~8 hours after a user's
+; first sign-in to appear. Keep auto-synced libraries under ~5,000 items.
+; ============================================================================
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\OneDrive\AutoMountTeamSites]
+"Example Library - Documents"="tenantId=00000000%2D0000%2D0000%2D0000%2D000000000000&siteId=%7B00000000%2D0000%2D0000%2D0000%2D000000000000%7D&webId=%7B00000000%2D0000%2D0000%2D0000%2D000000000000%7D&listId=00000000%2D0000%2D0000%2D0000%2D000000000000&webUrl=https%3A%2F%2Fexample%2Esharepoint%2Ecom%2Fsites%2FExampleSite&version=1"

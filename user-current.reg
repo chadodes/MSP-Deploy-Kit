@@ -1,0 +1,60 @@
+Windows Registry Editor Version 5.00
+
+; ============================================================================
+; OPUS DEPLOY - PER-USER SETTINGS
+; Same settings as user.reg but with HKEY_CURRENT_USER paths, for applying
+; to a LIVE signed-in user. post-oobe.cmd imports this at first sign-in.
+; (user.reg is the Default-hive version that future accounts inherit.)
+; ============================================================================
+
+; --- Explorer & taskbar: file extensions ON, open Explorer at This PC,
+;     widgets / chat / Copilot / task view buttons OFF, search = icon only,
+;     no OneDrive ads in Explorer
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"HideFileExt"=dword:00000000
+"LaunchTo"=dword:00000001
+"ShowTaskViewButton"=dword:00000000
+"TaskbarDa"=dword:00000000
+"TaskbarMn"=dword:00000000
+"ShowCopilotButton"=dword:00000000
+"SearchboxTaskbarMode"=dword:00000001
+"ShowSyncProviderNotifications"=dword:00000000
+
+; --- Advertising ID OFF
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo]
+"Enabled"=dword:00000000
+
+; --- Tailored experiences / diagnostic-data ads OFF
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Privacy]
+"TailoredExperiencesWithDiagnosticDataEnabled"=dword:00000000
+
+; --- No suggested apps, no silently auto-installed Store apps, no Start ads
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager]
+"ContentDeliveryAllowed"=dword:00000000
+"SilentInstalledAppsEnabled"=dword:00000000
+"SystemPaneSuggestionsEnabled"=dword:00000000
+"SubscribedContent-338387Enabled"=dword:00000000
+"SubscribedContent-338388Enabled"=dword:00000000
+"SubscribedContent-338389Enabled"=dword:00000000
+"SubscribedContent-353694Enabled"=dword:00000000
+"SubscribedContent-353696Enabled"=dword:00000000
+
+; --- No "finish setting up your device" (SCOOBE) nag screens
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement]
+"ScoobeSystemSettingEnabled"=dword:00000000
+
+; --- No Bing / web suggestions in Start menu search
+[HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer]
+"DisableSearchBoxSuggestions"=dword:00000001
+
+; --- NumLock ON at the sign-in screen and desktop
+[HKEY_CURRENT_USER\Control Panel\Keyboard]
+"InitialKeyboardIndicators"="2147483650"
+
+; --- Game Bar / Game DVR capture OFF (stops Win+G popups on business PCs)
+;     Game DVR itself is disabled by machine policy in machine.reg - the
+;     per-user switch lives under the hive's protected System branch
+;     (System\GameConfigStore), which refuses writes and caused the
+;     partial-import error on every run, so it is deliberately not set here.
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\GameDVR]
+"AppCaptureEnabled"=dword:00000000

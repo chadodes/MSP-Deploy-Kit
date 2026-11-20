@@ -1,0 +1,61 @@
+Windows Registry Editor Version 5.00
+
+; ============================================================================
+; OPUS DEPLOY - MACHINE SETTINGS (HKLM)
+; Applied by setup.cmd during OOBE. Safe to re-run on a live machine too.
+; ============================================================================
+
+; --- Fast Startup OFF (real shutdowns; more reliable hardware/WOL behaviour)
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Power]
+"HiberbootEnabled"=dword:00000000
+
+; --- Long file paths ON
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem]
+"LongPathsEnabled"=dword:00000001
+
+; --- Telemetry to Basic (lowest a Pro machine honours by policy)
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DataCollection]
+"AllowTelemetry"=dword:00000001
+
+; --- Cortana OFF by policy
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Windows Search]
+"AllowCortana"=dword:00000000
+
+; --- Windows Update: never auto-reboot while a user is signed in
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU]
+"NoAutoRebootWithLoggedOnUsers"=dword:00000001
+
+; --- Verbose sign-in / shutdown status messages (useful during deployment)
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
+"VerboseStatus"=dword:00000001
+
+; --- Microsoft Edge: skip the first-run experience
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Edge]
+"HideFirstRunExperience"=dword:00000001
+
+; --- Do NOT silently sign the user back in after an update restart (ARSO off)
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon]
+"DisableAutomaticRestartSignOn"=dword:00000001
+
+; --- OneDrive: silently sign the sync app in with the work account of
+;     whoever signs into Windows (works on Entra-joined machines), and keep
+;     Files On-Demand on so synced SharePoint libraries stay as cloud
+;     placeholders instead of downloading everything to the disk.
+;     Per-client SharePoint library auto-mount lives in
+;     Clients\<CODE>\libraries.reg, imported by setup.cmd when present.
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\OneDrive]
+"SilentAccountConfig"=dword:00000001
+"FilesOnDemandEnabled"=dword:00000001
+
+; --- Game DVR OFF by machine policy, for every account. (The per-user
+;     switch lives in the user hive's protected System\GameConfigStore
+;     branch, which refuses writes even for admins - it was the cause of
+;     the partial-import error in setup.cmd / post-oobe.cmd on every run.
+;     Policy is the supported route; user.reg still sets AppCaptureEnabled
+;     per user as well.)
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\GameDVR]
+"AllowGameDVR"=dword:00000000
+
+; --- OPTIONAL: Remote Desktop ON (Windows Pro only). Remove the ; to enable.
+; [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server]
+; "fDenyTSConnections"=dword:00000000

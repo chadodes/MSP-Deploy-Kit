@@ -1,0 +1,13 @@
+Put THIS CLIENT's installers in this folder. They install only when this
+client is selected at deployment:
+
+- The client's RMM agent installer.
+- Any client-specific application installers.
+
+*.msi files here install silently and automatically. For an EXE installer,
+or one needing a site key/token, create install.cmd in THIS folder with
+the exact command line (see the kit's Apps\install-apps.cmd for the
+pattern).
+
+Installers that EVERY client gets go in the kit's top-level Apps folder
+instead - not here.

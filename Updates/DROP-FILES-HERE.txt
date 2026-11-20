@@ -1,0 +1,28 @@
+TWO kinds of update files live in THIS folder:
+
+1. THE CUMULATIVE UPDATE (the big one, ~5 GB - refresh monthly):
+   Download the latest cumulative update .msu for Windows 11 (search the
+   Microsoft Update Catalog, catalog.update.microsoft.com, by its KB
+   number - e.g. KB5132061 for November 2026). One package covers 24H2,
+   25H2 and 26H2 on x64. Keep ONLY the newest one here - delete last
+   month's - and refresh after each Patch Tuesday.
+
+2. THE 26H2 ENABLEMENT PACKAGE (the tiny one, ~174 KB - KB5121794):
+   This is the switch that turns a 24H2/25H2 machine into 26H2. It is
+   NOT in the Update Catalog - it comes from Microsoft's download
+   servers (the link is in the kit README notes / ask Muse). Drop the
+   x64 .msu here once; it does not change monthly, so it just stays.
+   post-oobe installs it AFTER the cumulative update automatically,
+   because it requires a recent cumulative update (KB5124010 or later)
+   to be in place first.
+
+During a Full Auto deployment, post-oobe finds the stick by its marker
+file and installs these from here with DISM - after the agent install,
+before the Entra join, so the updates' restart rides along with the
+join restart. The folder is deliberately NOT copied to the machine's
+C:\OpusDeploy (the cumulative update is ~5 GB), so the stick must stay
+plugged in until post-oobe has finished.
+
+If this folder is empty or the stick is out, the step logs a skip in
+deploy.log and Windows Update handles updates the slow way - the
+deployment never fails over a missing update package.

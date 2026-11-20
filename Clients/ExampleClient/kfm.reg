@@ -1,0 +1,14 @@
+Windows Registry Editor Version 5.00
+
+; ============================================================================
+; EXAMPLE CLIENT - ONEDRIVE FOLDER BACKUP (Known Folder Move)
+; Silently redirects Desktop, Documents and Pictures into the signed-in
+; user's OneDrive at first sign-in - no wizard, nothing for the user to do.
+; KFMSilentOptIn value = the client's Entra tenant ID.
+; KFMBlockOptOut = users cannot turn the redirection back off.
+; setup.cmd imports this file during deployment when it exists.
+; ============================================================================
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\OneDrive]
+"KFMSilentOptIn"="00000000-0000-0000-0000-000000000000"
+"KFMBlockOptOut"=dword:00000001

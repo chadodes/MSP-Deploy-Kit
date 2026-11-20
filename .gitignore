@@ -1,0 +1,13 @@
+# Opus Deploy Kit - never commit secrets or binaries
+# Provisioning packages carry bulk enrollment tokens - stick only, never GitHub
+*.ppkg
+# Agent installers, update packages, driver binaries
+*.exe
+*.msi
+*.msu
+*.dll
+*.sys
+*.cat
+*.cab
+# Muse GitHub snapshot sync records
+*.muse-github-snapshot-sync.json

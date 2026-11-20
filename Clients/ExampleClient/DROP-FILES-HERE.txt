@@ -1,0 +1,15 @@
+Put this client's files in THIS folder:
+
+1. join.ppkg  - the Entra ID join provisioning package for this tenant.
+   Create it in Windows Configuration Designer (free, Microsoft Store):
+   Provision desktop devices -> Account management -> Azure AD bulk token ->
+   sign in with this client's Opus admin account -> Export the package and
+   save it here with the exact name join.ppkg. Full steps in the kit README.
+   (Bulk tokens expire - max about 180 days - so regenerate before then.)
+
+2. The client's installers (RMM agent + any client-specific apps) go in
+   the Apps subfolder of this folder:
+   - *.msi in Apps  -> installed silently, automatically.
+   - EXE installer, or one needing a site key/token -> create install.cmd
+     in the Apps subfolder with the exact command line (see the kit's
+     Apps\install-apps.cmd for the pattern).
