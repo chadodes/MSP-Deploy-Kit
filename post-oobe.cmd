@@ -28,7 +28,9 @@ rem      builds that only receive it through an update), and registers a
 rem      finisher task that keeps re-checking at each sign-in until the
 rem      machine is fully up to date
 rem    - deletes the staged join packages and unattend file from the machine
-rem  Everything is logged to deploy.log in this folder.
+rem  Everything is logged to deploy.log in this folder; when a run completes
+rem  the log is renamed to deploy-<machine name>.log so a collected log says
+rem  which machine it came from.
 rem ============================================================================
 setlocal EnableExtensions
 call "%~dp0config.cmd"
@@ -194,6 +196,15 @@ reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" /v MSPDeploy
 if exist "%~dp0join-done.flag" del /q "%~dp0join-done.flag" >> "%LOG%" 2>&1
 
 echo ==== Done %DATE% %TIME% ==== >> "%LOG%"
+
+rem --- Rename the log to carry the machine name: by the end of a complete run ---
+rem --- the join has set the final name, so the log identifies its machine as -----
+rem --- deploy-<COMPUTERNAME>.log. The update finisher appends to the renamed ----
+rem --- file; if this rename ever fails, the finisher falls back to deploy.log. ---
+set FINALLOG=%~dp0deploy-%COMPUTERNAME%.log
+if exist "%FINALLOG%" del /q "%FINALLOG%" >nul 2>&1
+ren "%LOG%" "deploy-%COMPUTERNAME%.log" >nul 2>&1
+if exist "%FINALLOG%" set LOG=%FINALLOG%
 echo.
 echo  MSP post-oobe finished. Log: %LOG%
 

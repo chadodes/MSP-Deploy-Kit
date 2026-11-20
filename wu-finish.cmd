@@ -10,7 +10,10 @@ rem  forever - if the log says it gave up, check Windows Update manually.
 rem  Windows Update's own automatic updates are always the backstop anyway.
 rem ============================================================================
 setlocal EnableExtensions EnableDelayedExpansion
-set LOG=%~dp0deploy.log
+rem  post-oobe renames the log to deploy-<machine name>.log when a run completes;
+rem  fall back to the plain name if that rename never happened (older kit, crash).
+set LOG=%~dp0deploy-%COMPUTERNAME%.log
+if not exist "%LOG%" if exist "%~dp0deploy.log" set LOG=%~dp0deploy.log
 set COUNTFILE=%~dp0wu-passes.txt
 
 set PASSES=0
