@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  OPUS DEPLOY - UNATTEND TEMPLATE
-  setup.cmd replaces __OPUS_ADMIN_USER__ / __OPUS_ADMIN_PASS__ with the values
+  MSP DEPLOY - UNATTEND TEMPLATE
+  setup.cmd replaces __MSP_ADMIN_USER__ / __MSP_ADMIN_PASS__ with the values
   from config.cmd and stages the result as C:\Windows\Panther\unattend.xml
   before running Sysprep. Do not edit the tokens.
   autounattend.xml is this same file with the default values filled in, for
@@ -25,14 +25,14 @@
     <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
       <ComputerName>*</ComputerName>
       <TimeZone>Manitoba Standard Time</TimeZone>
-      <RegisteredOrganization>Opus Computer Solutions</RegisteredOrganization>
+      <RegisteredOrganization>MSP Computer Solutions</RegisteredOrganization>
     </component>
     <component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
       <RunSynchronous>
         <RunSynchronousCommand wcm:action="add">
           <Order>1</Order>
-          <Path>cmd /c (for %i in (C D E F G H I J K L) do @if exist %i:\opusdeploy.marker %i:\copy-kit.cmd)</Path>
-          <Description>Copy the Opus deploy kit from USB to C:\OpusDeploy</Description>
+          <Path>cmd /c (for %i in (C D E F G H I J K L) do @if exist %i:\mspdeploy.marker %i:\copy-kit.cmd)</Path>
+          <Description>Copy the MSP deploy kit from USB to C:\MSPDeploy</Description>
         </RunSynchronousCommand>
       </RunSynchronous>
     </component>
@@ -57,12 +57,12 @@
       <UserAccounts>
         <LocalAccounts>
           <LocalAccount wcm:action="add">
-            <Name>__OPUS_ADMIN_USER__</Name>
-            <DisplayName>Opus Admin</DisplayName>
-            <Description>Opus Computer Solutions administrator</Description>
+            <Name>__MSP_ADMIN_USER__</Name>
+            <DisplayName>MSP Admin</DisplayName>
+            <Description>MSP Computer Solutions administrator</Description>
             <Group>Administrators</Group>
             <Password>
-              <Value>__OPUS_ADMIN_PASS__</Value>
+              <Value>__MSP_ADMIN_PASS__</Value>
               <PlainText>true</PlainText>
             </Password>
           </LocalAccount>
@@ -71,8 +71,8 @@
       <FirstLogonCommands>
         <SynchronousCommand wcm:action="add">
           <Order>1</Order>
-          <CommandLine>cmd /c C:\OpusDeploy\post-oobe.cmd</CommandLine>
-          <Description>Opus post-OOBE configuration (settings, apps, timezone)</Description>
+          <CommandLine>cmd /c C:\MSPDeploy\post-oobe.cmd</CommandLine>
+          <Description>MSP post-OOBE configuration (settings, apps, timezone)</Description>
           <RequiresUserInput>false</RequiresUserInput>
         </SynchronousCommand>
       </FirstLogonCommands>

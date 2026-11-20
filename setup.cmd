@@ -1,23 +1,23 @@
 @echo off
 rem ============================================================================
-rem  OPUS DEPLOY - run this from the Shift+F10 command prompt at the Windows
+rem  MSP DEPLOY - run this from the Shift+F10 command prompt at the Windows
 rem  setup (OOBE) screen. Pick the client, pick a mode:
 rem    Mode 1 (FULL AUTO): settings applied, unattend staged, Sysprep reboot -
-rem           OOBE answers itself, creates the Opus admin, and at first sign-in
+rem           OOBE answers itself, creates the MSP admin, and at first sign-in
 rem           the machine installs the client's agent and Entra-joins using
 rem           the client's provisioning package.
 rem    Mode 2 (SETTINGS ONLY): settings + admin account applied, client choice
 rem           recorded, but you click through OOBE yourself; run
-rem           C:\OpusDeploy\post-oobe.cmd once at the desktop to finish.
+rem           C:\MSPDeploy\post-oobe.cmd once at the desktop to finish.
 rem ============================================================================
 setlocal EnableExtensions
 call "%~dp0config.cmd"
 setlocal EnableDelayedExpansion
-title Opus Deploy
+title MSP Deploy
 
 echo.
 echo  ============================================================
-echo   OPUS DEPLOY KIT
+echo   MSP DEPLOY KIT
 echo   Admin account : %ADMIN_USER%
 echo   Timezone      : %TZ_ID%
 echo  ============================================================
@@ -90,7 +90,7 @@ call :stage_kit
 call :write_selection
 
 echo  Building unattend.xml from config.cmd values...
-powershell -NoProfile -ExecutionPolicy Bypass -Command "(Get-Content '%~dp0unattend-template.xml' -Raw).Replace('__OPUS_ADMIN_USER__', $env:ADMIN_USER).Replace('__OPUS_ADMIN_PASS__', $env:ADMIN_PASS) | Set-Content -Encoding UTF8 '%WINDRIVE%\Windows\Panther\unattend.xml'"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "(Get-Content '%~dp0unattend-template.xml' -Raw).Replace('__MSP_ADMIN_USER__', $env:ADMIN_USER).Replace('__MSP_ADMIN_PASS__', $env:ADMIN_PASS) | Set-Content -Encoding UTF8 '%WINDRIVE%\Windows\Panther\unattend.xml'"
 if not exist "%WINDRIVE%\Windows\Panther\unattend.xml" (
   echo  ERROR: unattend.xml was not created. Sysprep will NOT run.
   pause
@@ -119,7 +119,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Set-LocalUser -Nam
 
 echo.
 echo  Done. Settings are applied and %ADMIN_USER% exists.
-echo  Click through OOBE as usual - afterwards, run C:\OpusDeploy\post-oobe.cmd
+echo  Click through OOBE as usual - afterwards, run C:\MSPDeploy\post-oobe.cmd
 echo  once from the desktop to finish: it installs the client agent and does
 echo  the Entra join for %CLIENT_DISPLAY%.
 pause
@@ -131,14 +131,14 @@ echo  [1/4] Machine settings - machine.reg...
 reg import "%~dp0machine.reg"
 
 echo  [2/4] Default-user settings - user.reg into the Default profile...
-reg load HKLM\OpusDefault "%WINDRIVE%\Users\Default\NTUSER.DAT" >nul 2>&1
+reg load HKLM\MSPDefault "%WINDRIVE%\Users\Default\NTUSER.DAT" >nul 2>&1
 if errorlevel 1 (
   echo        WARNING: Default hive would not load - user defaults SKIPPED.
   echo        post-oobe.cmd still covers the first account; re-run setup.cmd
   echo        later from an admin prompt to fix the Default profile.
 ) else (
   reg import "%~dp0user.reg"
-  reg unload HKLM\OpusDefault >nul 2>&1
+  reg unload HKLM\MSPDefault >nul 2>&1
 )
 
 echo  [3/4] Power settings...
@@ -162,15 +162,15 @@ exit /b 0
 
 rem ==========================================================================
 :stage_kit
-echo  [4/4] Copying the kit to %WINDRIVE%\OpusDeploy...
-robocopy "%~dp0." "%WINDRIVE%\OpusDeploy" /E /XD "%~dp0Updates" "%~dp0Drivers" /NFL /NDL /NJH /NJS /R:1 /W:1 >nul 2>&1
-if errorlevel 8 echo        WARNING: kit copy reported errors - check %WINDRIVE%\OpusDeploy
+echo  [4/4] Copying the kit to %WINDRIVE%\MSPDeploy...
+robocopy "%~dp0." "%WINDRIVE%\MSPDeploy" /E /XD "%~dp0Updates" "%~dp0Drivers" /NFL /NDL /NJH /NJS /R:1 /W:1 >nul 2>&1
+if errorlevel 8 echo        WARNING: kit copy reported errors - check %WINDRIVE%\MSPDeploy
 exit /b 0
 
 rem ==========================================================================
 :write_selection
 rem  Records the chosen client where post-oobe.cmd will find it after OOBE.
-set "SELFILE=%WINDRIVE%\OpusDeploy\selected-client.cmd"
+set "SELFILE=%WINDRIVE%\MSPDeploy\selected-client.cmd"
 > "%SELFILE%" echo @echo off
 >>"%SELFILE%" echo set SEL_CLIENT_KEY=%CLIENTKEY%
 >>"%SELFILE%" echo set SEL_CLIENT_DISPLAY=%CLIENT_DISPLAY%

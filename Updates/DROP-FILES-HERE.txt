@@ -20,7 +20,7 @@ During a Full Auto deployment, post-oobe finds the stick by its marker
 file and installs these from here with DISM - after the agent install,
 before the Entra join, so the updates' restart rides along with the
 join restart. The folder is deliberately NOT copied to the machine's
-C:\OpusDeploy (the cumulative update is ~5 GB), so the stick must stay
+C:\MSPDeploy (the cumulative update is ~5 GB), so the stick must stay
 plugged in until post-oobe has finished.
 
 If this folder is empty or the stick is out, the step logs a skip in

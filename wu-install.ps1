@@ -1,5 +1,5 @@
 # ============================================================================
-#  OPUS DEPLOY - WINDOWS UPDATE PASS
+#  MSP DEPLOY - WINDOWS UPDATE PASS
 #  Searches Windows Update for applicable software updates (driver updates
 #  excluded - they are the optional class; feature updates excluded by
 #  title - version jumps are a separate decision), downloads them, then

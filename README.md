@@ -1,11 +1,11 @@
-# Opus Deploy Kit — Windows 11 OOBE USB (v2, per-client)
+# MSP Deploy Kit — Windows 11 OOBE USB (v2, per-client)
 
 Turns a brand-new or freshly reset Windows 11 laptop sitting at the setup
 screen into a configured, Entra-joined machine for a specific client, with
 almost no clicking:
 
 **Shift+F10 → run `setup.cmd` → pick the client → pick Full Auto → walk
-away.** The machine reboots, OOBE answers itself, your Opus admin account is
+away.** The machine reboots, OOBE answers itself, your MSP admin account is
 created, and at first sign-in a finishing script installs that client's RMM
 agent and joins the machine to that client's Entra ID tenant.
 
@@ -91,7 +91,7 @@ never `!` (batch delayed expansion silently drops it).
 ## Quick start (Full Auto — the normal path)
 
 1. Copy the **contents of this folder to the root of a USB stick** (so
-   `setup.cmd`, `autounattend.xml`, `opusdeploy.marker`, `Clients\` and
+   `setup.cmd`, `autounattend.xml`, `mspdeploy.marker`, `Clients\` and
    `Apps\` sit at the top level).
 2. Power on the laptop. At the first Windows setup screen press
    **Shift+F10** (some laptops: **Fn+Shift+F10**) for a command prompt.
@@ -108,12 +108,12 @@ never `!` (batch delayed expansion silently drops it).
    resumes by itself — then per-user settings, generic apps, **the
    client's agent**, the stick's updates, a Windows Update pass, the
    timezone, the update finisher, and cleanup.
-   Log file: `C:\OpusDeploy\deploy.log`.
+   Log file: `C:\MSPDeploy\deploy.log`.
 
 ## Settings Only mode (choice 2)
 
 Same settings, admin account, and client selection — but no hands-free OOBE;
-you click through setup yourself, then run `C:\OpusDeploy\post-oobe.cmd`
+you click through setup yourself, then run `C:\MSPDeploy\post-oobe.cmd`
 once from the desktop to finish (agent + join included). Use this for
 Windows **Home** machines that still insist on a Microsoft account while
 online — note Entra join needs **Pro** or better regardless.
@@ -239,4 +239,4 @@ Identity → Overview) before it does anything. `setup.cmd` imports it the same 
 | `copy-kit.cmd` | Helper the unattend file uses to stage the kit |
 | `Apps\` | Installers shared by all clients + `install-apps.cmd` |
 | `Updates\` | Latest cumulative update `.msu` + the 26H2 enablement package (KB5121794) — applied from the stick during post-oobe (not staged to the machine) |
-| `opusdeploy.marker` | How the scripts find this USB stick |
+| `mspdeploy.marker` | How the scripts find this USB stick |

@@ -1,4 +1,4 @@
-OPUS DEPLOY - DRIVERS FOLDER
+MSP DEPLOY - DRIVERS FOLDER
 ============================
 post-oobe.cmd installs drivers from here with pnputil BEFORE the
 Entra join, so a machine whose fresh Windows install has no network
@@ -29,4 +29,4 @@ Other drivers work too, but keep it lean - Windows Update and the
 finisher pick up most of the rest once the machine is online.
 
 This folder is read from the stick at run time; it is NOT copied to
-C:\OpusDeploy. Keep the stick plugged in until post-oobe finishes.
+C:\MSPDeploy. Keep the stick plugged in until post-oobe finishes.

@@ -1,6 +1,6 @@
 @echo off
 rem ============================================================================
-rem  OPUS DEPLOY - UPDATE FINISHER
+rem  MSP DEPLOY - UPDATE FINISHER
 rem  Runs from a scheduled task (created by post-oobe.cmd, running as SYSTEM
 rem  at every sign-in) and re-runs the Windows Update pass (wu-install.ps1)
 rem  until a pass finds the machine fully up to date; then it deletes its
@@ -17,10 +17,10 @@ set PASSES=0
 if exist "%COUNTFILE%" set /p PASSES=<"%COUNTFILE%"
 set /a PASSES+=1
 >"%COUNTFILE%" echo %PASSES%
-echo ==== Opus update finisher pass %PASSES% %DATE% %TIME% ==== >> "%LOG%"
+echo ==== MSP update finisher pass %PASSES% %DATE% %TIME% ==== >> "%LOG%"
 if %PASSES% GTR 6 (
   echo  Finisher gave up after 6 passes - check Windows Update manually. >> "%LOG%"
-  schtasks /delete /tn "OpusDeployWU" /f >> "%LOG%" 2>&1
+  schtasks /delete /tn "MSPDeployWU" /f >> "%LOG%" 2>&1
   del /q "%COUNTFILE%" >nul 2>&1
   exit /b 0
 )
@@ -30,9 +30,9 @@ set WUCODE=%ERRORLEVEL%
 echo  Finisher pass finished with code %WUCODE% >> "%LOG%"
 if "%WUCODE%"=="0" (
   echo  Machine is fully up to date - finisher done, task removed. >> "%LOG%"
-  schtasks /delete /tn "OpusDeployWU" /f >> "%LOG%" 2>&1
+  schtasks /delete /tn "MSPDeployWU" /f >> "%LOG%" 2>&1
   del /q "%COUNTFILE%" >nul 2>&1
   exit /b 0
 )
-if "%WUCODE%"=="3010" shutdown /r /t 60 /c "Opus deploy - restart to continue updates"
+if "%WUCODE%"=="3010" shutdown /r /t 60 /c "MSP deploy - restart to continue updates"
 exit /b 0

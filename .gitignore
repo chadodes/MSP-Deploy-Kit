@@ -1,4 +1,4 @@
-# Opus Deploy Kit - never commit secrets or binaries
+# MSP Deploy Kit - never commit secrets or binaries
 # Provisioning packages carry bulk enrollment tokens - stick only, never GitHub
 *.ppkg
 # Agent installers, update packages, driver binaries

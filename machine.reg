@@ -1,7 +1,7 @@
 Windows Registry Editor Version 5.00
 
 ; ============================================================================
-; OPUS DEPLOY - MACHINE SETTINGS (HKLM)
+; MSP DEPLOY - MACHINE SETTINGS (HKLM)
 ; Applied by setup.cmd during OOBE. Safe to re-run on a live machine too.
 ; ============================================================================
 

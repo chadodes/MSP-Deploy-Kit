@@ -1,6 +1,6 @@
 @echo off
 rem ============================================================================
-rem  OPUS DEPLOY KIT - CONFIGURATION
+rem  MSP DEPLOY KIT - CONFIGURATION
 rem  Edit THIS file to change deployment settings. It is the single place for:
 rem  the local admin account, timezone, and power settings.
 rem
@@ -13,7 +13,7 @@ rem  if you ever boot from Windows install media instead of using setup.cmd.
 rem ============================================================================
 
 rem --- Local administrator account created on every deployed machine ---
-set ADMIN_USER=OpusAdmin
+set ADMIN_USER=MSPAdmin
 set ADMIN_PASS=ExamplePass#2026
 
 rem --- Timezone (must be a valid Windows timezone ID - see: tzutil /l) ---

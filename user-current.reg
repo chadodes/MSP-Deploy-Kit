@@ -1,7 +1,7 @@
 Windows Registry Editor Version 5.00
 
 ; ============================================================================
-; OPUS DEPLOY - PER-USER SETTINGS
+; MSP DEPLOY - PER-USER SETTINGS
 ; Same settings as user.reg but with HKEY_CURRENT_USER paths, for applying
 ; to a LIVE signed-in user. post-oobe.cmd imports this at first sign-in.
 ; (user.reg is the Default-hive version that future accounts inherit.)

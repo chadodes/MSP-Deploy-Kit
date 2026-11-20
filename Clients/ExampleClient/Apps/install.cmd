@@ -5,7 +5,7 @@ rem The customer-specific agent installer has its client assignment baked
 rem in and installs without prompts. When you download a newer agent,
 rem REPLACE the old AGENT_*.EXE - keep exactly one in this folder, or both
 rem will run. Called by post-oobe.cmd during deployment; output is captured
-rem in C:\OpusDeploy\deploy.log. After the installer exits, this script waits
+rem in C:\MSPDeploy\deploy.log. After the installer exits, this script waits
 rem a full 5 minutes: the agent's services (antivirus, monitoring) are still
 rem starting after the installer process is gone, and the deployment must
 rem not reboot out from under them.

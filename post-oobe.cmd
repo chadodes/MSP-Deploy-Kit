@@ -1,6 +1,6 @@
 @echo off
 rem ============================================================================
-rem  OPUS DEPLOY - POST-OOBE FINISHING SCRIPT
+rem  MSP DEPLOY - POST-OOBE FINISHING SCRIPT
 rem  Runs automatically at first sign-in on the Full Auto path (via the
 rem  unattend FirstLogonCommands), or run it manually once on the
 rem  Settings Only path. It:
@@ -35,7 +35,7 @@ call "%~dp0config.cmd"
 setlocal EnableDelayedExpansion
 set LOG=%~dp0deploy.log
 
-echo ==== Opus post-oobe %DATE% %TIME% ==== >> "%LOG%"
+echo ==== MSP post-oobe %DATE% %TIME% ==== >> "%LOG%"
 
 if exist "%~dp0selected-client.cmd" call "%~dp0selected-client.cmd"
 if defined SEL_CLIENT_DISPLAY echo  Client: %SEL_CLIENT_DISPLAY%
@@ -44,12 +44,12 @@ echo.
 
 rem --- Find the USB stick by its marker file (Drivers + Updates live there) ----
 set STICK=
-for %%D in (C D E F G H I J K L) do if exist %%D:\opusdeploy.marker set STICK=%%D:
+for %%D in (C D E F G H I J K L) do if exist %%D:\mspdeploy.marker set STICK=%%D:
 
 rem --- Resume hook: if the machine reboots mid-run (the join reboot does), -----
 rem --- this script re-runs at the next sign-in and continues. The hook is -------
 rem --- removed at the end of a complete run. ------------------------------------
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" /v OpusDeployResume /t REG_SZ /d "\"%~dp0post-oobe.cmd\"" /f >> "%LOG%" 2>&1
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" /v MSPDeployResume /t REG_SZ /d "\"%~dp0post-oobe.cmd\"" /f >> "%LOG%" 2>&1
 set RESUMED=
 if exist "%~dp0join-done.flag" set RESUMED=1
 if defined RESUMED echo  Resuming after the join restart - the join step is skipped.
@@ -109,7 +109,7 @@ if defined JOINAPPLIED (
   echo  sign back in as %ADMIN_USER% and the finishing script resumes by itself.
   echo  Join applied - controlled restart; finishing resumes at next sign-in. >> "%LOG%"
   > "%~dp0join-done.flag" echo Join applied %DATE% %TIME%
-  shutdown /r /t 30 /c "Opus deploy - restart to complete the Entra ID join; finishing resumes at sign-in"
+  shutdown /r /t 30 /c "MSP deploy - restart to complete the Entra ID join; finishing resumes at sign-in"
   exit /b 0
 )
 
@@ -185,22 +185,22 @@ if not "%TZERR%"=="0" (
 
 rem --- Register the update finisher: a SYSTEM task at every sign-in that -------
 rem --- re-runs the WU pass until the machine is fully up to date. --------------
-schtasks /create /tn "OpusDeployWU" /tr "\"%~dp0wu-finish.cmd\"" /sc onlogon /ru SYSTEM /f >> "%LOG%" 2>&1
+schtasks /create /tn "MSPDeployWU" /tr "\"%~dp0wu-finish.cmd\"" /sc onlogon /ru SYSTEM /f >> "%LOG%" 2>&1
 
 rem --- Cleanup: never leave join packages or the unattend file behind ---------
 if exist "%~dp0Clients" rmdir /s /q "%~dp0Clients" >> "%LOG%" 2>&1
 if exist "C:\Windows\Panther\unattend.xml" del /q "C:\Windows\Panther\unattend.xml" >> "%LOG%" 2>&1
-reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" /v OpusDeployResume /f >> "%LOG%" 2>&1
+reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" /v MSPDeployResume /f >> "%LOG%" 2>&1
 if exist "%~dp0join-done.flag" del /q "%~dp0join-done.flag" >> "%LOG%" 2>&1
 
 echo ==== Done %DATE% %TIME% ==== >> "%LOG%"
 echo.
-echo  Opus post-oobe finished. Log: %LOG%
+echo  MSP post-oobe finished. Log: %LOG%
 
 if defined REBOOTNEEDED (
   echo  Updates need a restart to finish - restarting in 60 seconds.
   echo  The update finisher keeps checking after the restart until the machine is fully up to date.
-  shutdown /r /t 60 /c "Opus deploy - restart to finish updates"
+  shutdown /r /t 60 /c "MSP deploy - restart to finish updates"
 )
 exit /b 0
 
